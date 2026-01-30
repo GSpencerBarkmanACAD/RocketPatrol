@@ -50,6 +50,20 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
             this.gameOver = true
         }, null, this)
+
+        let timerConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'left',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.timerRight = this.add.text(game.config.width - borderUISize - borderPadding, borderUISize + borderPadding*2, Math.ceil(this.timeDuration / 1000), timerConfig).setOrigin(1, 0)
     }
 
     update() {
@@ -83,6 +97,16 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene")
         }
+
+        
+        if (!this.gameOver) {
+            
+            const seconds = Math.ceil(this.clock.getRemainingSeconds());
+            this.timerRight.setText(seconds);
+
+        }
+        
+
     }
 
     checkCollision(rocket, ship) {
